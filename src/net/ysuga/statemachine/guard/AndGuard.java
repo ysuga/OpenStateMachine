@@ -1,4 +1,7 @@
-package net.ysuga.statemachine;
+package net.ysuga.statemachine.guard;
+
+import net.ysuga.statemachine.State;
+import net.ysuga.statemachine.StateMachineTagNames;
 
 
 /**
@@ -16,8 +19,9 @@ public class AndGuard extends AbstractLogicGuard {
 	 * 
 	 * 
 	 * @return If all of child guards are true, return true. If at least one child guard is false, return false. 
+	 * @throws Exception 
 	 */
-	public boolean operate(State state) {
+	public boolean operate(State state) throws Exception {
 		for(Guard g : getChildGuards()) {
 			if(!g.operate(state)) {
 				return false;
@@ -33,7 +37,7 @@ public class AndGuard extends AbstractLogicGuard {
 	 * @param condition
 	 */
 	public AndGuard(String name, Guard[] condition) {
-		super(name, condition);
+		super(name, StateMachineTagNames.AND, condition);
 	}
 	 
 }

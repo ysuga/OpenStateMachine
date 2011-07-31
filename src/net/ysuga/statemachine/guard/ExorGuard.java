@@ -1,4 +1,7 @@
-package net.ysuga.statemachine;
+package net.ysuga.statemachine.guard;
+
+import net.ysuga.statemachine.State;
+import net.ysuga.statemachine.StateMachineTagNames;
 
 
 /**
@@ -15,8 +18,9 @@ public class ExorGuard extends AbstractLogicGuard {
 	 * ExOr operation
 	 * 
 	 * @return If all child guards are true, return false. Or if all child guards are false, return false. Else, return true.
+	 * @throws Exception 
 	 */
-	public boolean operate(State state) {
+	public boolean operate(State state) throws Exception {
 		int falseCount = 0;
 		for(Guard g : getChildGuards()) {
 			if(!g.operate(state)) {
@@ -37,7 +41,7 @@ public class ExorGuard extends AbstractLogicGuard {
 	 * @param condition
 	 */
 	public ExorGuard(String name, Guard[] condition) {
-		super(name, condition);
+		super(name, StateMachineTagNames.EXOR, condition);
 	}
 	 
 }

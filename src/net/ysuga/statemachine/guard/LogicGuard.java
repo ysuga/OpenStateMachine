@@ -1,4 +1,4 @@
-package net.ysuga.statemachine;
+package net.ysuga.statemachine.guard;
 
 public interface LogicGuard extends Guard {
  

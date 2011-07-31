@@ -1,4 +1,10 @@
-package net.ysuga.statemachine;
+package net.ysuga.statemachine.guard;
+
+import net.ysuga.statemachine.ModelElement;
+import net.ysuga.statemachine.State;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 
 /**
@@ -16,13 +22,30 @@ package net.ysuga.statemachine;
 public interface Guard extends ModelElement {
  
 	/**
+	 * @throws Exception 
 	 * @brief Check the guard condition is true or false.
 	 */
-	public abstract boolean operate(State state);
+	public abstract boolean operate(State state) throws Exception;
 	/**
 	 * @brief get the name of this element
 	 * @return naem of element.
 	 */
 	public abstract String getName();
+	
+	public abstract String getKind();
+	
+	/**
+	 * <div lang="ja">
+	 *
+	 * @param xmlDocument
+	 * @return
+	 * </div>
+	 * <div lang="en">
+	 *
+	 * @param xmlDocument
+	 * @return
+	 * </div>
+	 */
+	public abstract Element toElement(Document xmlDocument);
 }
  

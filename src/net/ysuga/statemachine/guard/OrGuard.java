@@ -1,4 +1,7 @@
-package net.ysuga.statemachine;
+package net.ysuga.statemachine.guard;
+
+import net.ysuga.statemachine.State;
+import net.ysuga.statemachine.StateMachineTagNames;
 
 
 /**
@@ -16,7 +19,7 @@ public class OrGuard extends AbstractLogicGuard {
 	 * (non-Javadoc)
 	 * @see net.ysuga.statemachine.AbstractLogicGuard#operate(net.ysuga.statemachine.State)
 	 */
-	public boolean operate(State state) {
+	public boolean operate(State state) throws Exception {
 		for(Guard g : getChildGuards()) {
 			if(g.operate(state)) {
 				return true;
@@ -32,7 +35,7 @@ public class OrGuard extends AbstractLogicGuard {
 	 * @param condition
 	 */
 	public OrGuard(String name, Guard[] condition) {
-		super(name, condition);
+		super(name, StateMachineTagNames.OR, condition);
 	}
 	 
 }

@@ -1,4 +1,7 @@
-package net.ysuga.statemachine;
+package net.ysuga.statemachine.guard;
+
+import net.ysuga.statemachine.State;
+import net.ysuga.statemachine.StateMachineTagNames;
 
 
 /**
@@ -17,7 +20,7 @@ public class NotGuard extends AbstractLogicGuard {
 	 * (non-Javadoc)
 	 * @see net.ysuga.statemachine.AbstractLogicGuard#operate(net.ysuga.statemachine.State)
 	 */
-	public boolean operate(State state) {
+	public boolean operate(State state) throws Exception {
 		return !getChildGuards()[0].operate(state);
 	}
 	
@@ -28,7 +31,7 @@ public class NotGuard extends AbstractLogicGuard {
 	 * @param childGuard
 	 */
 	public NotGuard(String name, Guard childGuard) {
-		super(name, new Guard[]{childGuard});
+		super(name, StateMachineTagNames.NOT, new Guard[]{childGuard});
 	}
 	 
 }

@@ -38,6 +38,23 @@ public class StateCondition {
 		}
 		return false;
 	}
-	 
+	
+	@Override
+	/**
+	 * 
+	 * <div lang="ja">
+	 * @return
+	 * </div>
+	 * <div lang="en">
+	 * @return
+	 * </div>
+	 */
+	public String toString() {
+		if(state == ACTIVE_VALUE) {
+			return "ACTIVE";
+		} else {
+			return "INACTIVE";
+		}
+	}
 }
  
