@@ -1,10 +1,14 @@
 package net.ysuga.statemachine.guard;
 
-import net.ysuga.statemachine.State;
+import java.util.Map;
+
 import net.ysuga.statemachine.StateMachineTagNames;
+import net.ysuga.statemachine.state.State;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.Text;
 
 
 /**
@@ -52,7 +56,7 @@ public abstract class AbstractGuard implements Guard {
 	
 	/**
 	 * @throws Exception 
-	 * @see net.ysuga.statemachine.guard.Guard#operate(net.ysuga.statemachine.State)
+	 * @see net.ysuga.statemachine.guard.Guard#operate(net.ysuga.statemachine.state.DefaultState)
 	 */
 	abstract public boolean operate(State state) throws Exception;
 	
@@ -72,9 +76,28 @@ public abstract class AbstractGuard implements Guard {
 	 */
 	public Element toElement(Document xmlDocument) {
 		Element element = xmlDocument.createElement(StateMachineTagNames.GUARD);
+		element.setAttribute(StateMachineTagNames.NAME, getName());
 		element.setAttribute(StateMachineTagNames.KIND, getKind());
+		Element paramElement = xmlDocument.createElement(StateMachineTagNames.PARAMETER);
+		element.appendChild(paramElement);
+		Map<String, String> parameterMap = getParameterMap();
+		if(parameterMap != null) {
+			for(String key : parameterMap.keySet()) {
+				String value = parameterMap.get(key);
+				Element keyElement = xmlDocument.createElement(key);
+				Text valueElement = xmlDocument.createTextNode(value);
+				keyElement.appendChild(valueElement);
+				paramElement.appendChild(keyElement);
+			}
+		}
 		return element;
 	}
 	 
+	
+	abstract public GuardParameterMap getParameterMap();
+	
+	public String toString() {
+		return "Guard:"+getKind()+"("+getName() + ")";
+	}
 }
  

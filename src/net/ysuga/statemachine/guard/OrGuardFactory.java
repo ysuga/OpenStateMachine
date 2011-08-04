@@ -17,7 +17,7 @@ import org.w3c.dom.Node;
  *
  */
 public class OrGuardFactory extends AbstractLogicGuardFactory {
-
+	
 	/**
 	 * <div lang="ja">
 	 * コンストラクタ

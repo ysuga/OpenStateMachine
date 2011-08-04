@@ -11,8 +11,8 @@ package net.ysuga.statemachine.guard;
 import java.util.ArrayList;
 
 import net.ysuga.statemachine.StateMachineTagNames;
+import net.ysuga.statemachine.exception.InvalidFSMFileException;
 
-import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
@@ -20,21 +20,31 @@ import org.w3c.dom.NodeList;
  * @author ysuga
  *
  */
-public abstract class AbstractLogicGuardFactory extends AbstractGuardFactory {
+public abstract class AbstractLogicGuardFactory implements GuardFactory {
 
+	public String parseKind(Node node) {
+		return node.getAttributes().getNamedItem(StateMachineTagNames.KIND).getNodeValue();
+	}
+	
+	public String parseName(Node node) {
+		return node.getAttributes().getNamedItem(StateMachineTagNames.NAME).getNodeValue();
+	}
+	
+	private String kind;
+	
+	public String getKind() { return kind; }
 	/**
 	 * <div lang="ja">
 	 * コンストラクタ
-	 * @param kind
 	 * </div>
 	 * <div lang="en">
 	 * Constructor
-	 * @param kind
 	 * </div>
 	 */
 	public AbstractLogicGuardFactory(String kind) {
-		super(kind);
+		this.kind = kind;
 	}
+	
 	
 	/**
 	 * 
@@ -51,7 +61,7 @@ public abstract class AbstractLogicGuardFactory extends AbstractGuardFactory {
 	 * @throws Exception
 	 * </div>
 	 */
-	public Guard[] parseChild(Node node) throws Exception {
+	public Guard[] parseChild(Node node) throws InvalidFSMFileException {
 		GuardFactoryManager manager = GuardFactoryManager.getInstance();
 		ArrayList<Guard> guardList = new ArrayList<Guard>();
 		NodeList nodeList = node.getChildNodes();
@@ -81,12 +91,19 @@ public abstract class AbstractLogicGuardFactory extends AbstractGuardFactory {
 	 * </div>
 	 */
 	@Override
-	public Guard loadGuard(Node node) throws Exception {
+	public Guard loadGuard(Node node) throws InvalidFSMFileException {
 		Guard[] guards = parseChild(node);
 		String name = parseName(node);
+		try {
 		return createGuard(name, guards);
+		} catch (Exception e) {
+			throw new InvalidFSMFileException();
+		}
 	}
 	
 	public abstract Guard createGuard(String name, Guard[] guards) throws Exception;
 
+	public String toString() {
+		return "LogicGuardFactory:" + getKind();
+	}
 }

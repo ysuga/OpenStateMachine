@@ -1,22 +1,23 @@
 /**
- * AndGuardFactory.java
+ * DelayGuardFactory.java
  *
  * @author Yuki Suga (ysuga.net)
- * @date 2011/07/31
+ * @date 2011/08/04
  * @copyright 2011, ysuga.net allrights reserved.
  *
  */
 package net.ysuga.statemachine.guard;
 
+import java.util.Map;
+
 import net.ysuga.statemachine.StateMachineTagNames;
 
-import org.w3c.dom.Node;
 
 /**
  * @author ysuga
  *
  */
-public class AndGuardFactory extends AbstractLogicGuardFactory {
+public class DelayGuardFactory extends AbstractGuardFactory {
 	
 	/**
 	 * <div lang="ja">
@@ -28,29 +29,27 @@ public class AndGuardFactory extends AbstractLogicGuardFactory {
 	 * @param kind
 	 * </div>
 	 */
-	public AndGuardFactory() {
-		super(StateMachineTagNames.AND);
+	public DelayGuardFactory() {
+		super(StateMachineTagNames.DELAY);
 	}
 
 	/**
 	 * <div lang="ja">
 	 * @param name
-	 * @param guards
+	 * @param parameterMap
 	 * @return
-	 * @throws Exception
 	 * </div>
 	 * <div lang="en">
 	 * @param name
-	 * @param guards
+	 * @param parameterMap
 	 * @return
-	 * @throws Exception
 	 * </div>
 	 */
 	@Override
-	public Guard createGuard(String name, Guard[] guards) throws Exception {
-		return new AndGuard(name, guards);
+	public Guard createGuard(String name, GuardParameterMap parameterMap) {
+		String interval = parameterMap.get(DelayGuard.INTERVAL);
+		return new DelayGuard(name, Integer.parseInt(interval));
 	}
-
 
 
 }

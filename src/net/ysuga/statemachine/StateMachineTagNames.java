@@ -1,7 +1,11 @@
 package net.ysuga.statemachine;
 
 public interface StateMachineTagNames {
-	public String FSM = "FSM";
+	public String FSM = "Fsm";
+
+	public String STATE = "State";
+
+	public String TRANSITION = "Transition";
 	
 	public String INITIAL_STATE = "initial_state";
 
@@ -10,16 +14,14 @@ public interface StateMachineTagNames {
 
 	public String LOGICOPERATOR = "LogicOperator";
 	
-	
 	public String OPERATOR = "Operator";
 
-	public String TO = "to";
+	public String TO = "target";
 
-	public String TRANSITION = "Transition";
+	public String FROM = "source";
 
 	public String NAME = "name";
 
-	public String STATE = "State";
 	
 	public String ID = "ID";
 	
@@ -27,7 +29,13 @@ public interface StateMachineTagNames {
 	
 	public String ONEXIT = "OnExitAction";
 
+	public String ONOPERATE = "OnOperateAction";
 
+	public String PARAMETER = "Parameter";
+
+	public String TRANSITIONS = "TransitionList";
+	
+	
 	public String STATEACTION = "StateAction";
 	
 	
@@ -44,4 +52,18 @@ public interface StateMachineTagNames {
 	public String EXOR = "EXOR";
 	public String OR = "OR";
 	public String NOT = "NOT";
+	public String DELAY = "DELAY";
+
+	public String NULLGUARD = "NULL";
+
+	public String DEFAULT_STATE = "DefaultState";
+
+	public String STATES = "StateList";
+
+	public String X = "x";
+
+	public String Y = "y";
+
+
+
 }

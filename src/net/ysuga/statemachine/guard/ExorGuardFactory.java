@@ -18,6 +18,7 @@ import org.w3c.dom.Node;
  */
 public class ExorGuardFactory extends AbstractLogicGuardFactory {
 
+	
 	/**
 	 * <div lang="ja">
 	 * コンストラクタ

@@ -1,7 +1,7 @@
 package net.ysuga.statemachine.guard;
 
-import net.ysuga.statemachine.State;
 import net.ysuga.statemachine.StateMachineTagNames;
+import net.ysuga.statemachine.state.State;
 
 
 /**

@@ -1,23 +1,24 @@
 /**
- * AndGuardFactory.java
+ * DelayGuardFactory.java
  *
  * @author Yuki Suga (ysuga.net)
- * @date 2011/07/31
+ * @date 2011/08/04
  * @copyright 2011, ysuga.net allrights reserved.
  *
  */
 package net.ysuga.statemachine.guard;
 
+import java.util.Map;
+
 import net.ysuga.statemachine.StateMachineTagNames;
 
-import org.w3c.dom.Node;
 
 /**
  * @author ysuga
  *
  */
-public class AndGuardFactory extends AbstractLogicGuardFactory {
-	
+public class NullGuardFactory extends AbstractGuardFactory {
+
 	/**
 	 * <div lang="ja">
 	 * コンストラクタ
@@ -28,29 +29,26 @@ public class AndGuardFactory extends AbstractLogicGuardFactory {
 	 * @param kind
 	 * </div>
 	 */
-	public AndGuardFactory() {
-		super(StateMachineTagNames.AND);
+	public NullGuardFactory() {
+		super(StateMachineTagNames.NULLGUARD);
 	}
 
 	/**
 	 * <div lang="ja">
 	 * @param name
-	 * @param guards
+	 * @param parameterMap
 	 * @return
-	 * @throws Exception
 	 * </div>
 	 * <div lang="en">
 	 * @param name
-	 * @param guards
+	 * @param parameterMap
 	 * @return
-	 * @throws Exception
 	 * </div>
 	 */
 	@Override
-	public Guard createGuard(String name, Guard[] guards) throws Exception {
-		return new AndGuard(name, guards);
+	public Guard createGuard(String name, GuardParameterMap parameterMap) {
+		return new NullGuard(name);
 	}
-
 
 
 }

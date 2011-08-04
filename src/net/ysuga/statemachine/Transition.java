@@ -2,8 +2,11 @@ package net.ysuga.statemachine;
 
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 import net.ysuga.statemachine.guard.Guard;
+import net.ysuga.statemachine.state.State;
+import net.ysuga.statemachine.state.StateCondition;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -18,6 +21,10 @@ import org.w3c.dom.Element;
  */
 public class Transition implements ModelElement {
 
+	static Logger logger;
+	static {
+		logger = Logger.getLogger(Transition.class.getName());
+	}
 	private String name;
 
 	private State to;
@@ -30,30 +37,58 @@ public class Transition implements ModelElement {
 	private ArrayList<Point> pivotList;
 	
 	public boolean transit() throws Exception {
-		from.setState(StateCondition.INACTIVE);
-		to.setState(StateCondition.ACTIVE);
+		logger.entering(getClass().getName(), "transit", this);
+		from.onExit();
+		from.setStateCondition(StateCondition.INACTIVE);
+		to.setStateCondition(StateCondition.ACTIVE);
+		to.onEntry();
 		return true;
 	}
 
 	final public boolean checkGuard() throws Exception  {
-		return guard.operate(from);
+		logger.entering(getClass().getName(), "checkGuard", this);
+		boolean ret = guard.operate(from);
+		logger.exiting(getClass().getName(), "checkGuard", ret);
+		return ret;
 	}
 
 	final public String getName() {
 		return name;
 	}
 
+	/**
+	 * 
+	 * <div lang="ja">
+	 * コンストラクタ
+	 * @param name
+	 * @param from
+	 * @param to
+	 * @param guard
+	 * </div>
+	 * <div lang="en">
+	 * Constructor
+	 * @param name
+	 * @param from
+	 * @param to
+	 * @param guard
+	 * </div>
+	 */
 	public Transition(String name, State from, State to, Guard guard) {
 		this.name = name;
 		this.from = from;
 		this.to = to;
 		this.guard = guard;
+		this.pivotList = new ArrayList<Point>();
 	}
 
+	public String toString() {
+		return "Transition(" + getName() + ")";
+	}
 	
 	public Element toElement(Document xmlDocument) {
 		Element transitionElem = xmlDocument.createElement(StateMachineTagNames.TRANSITION);
 		transitionElem.setAttribute(StateMachineTagNames.NAME, getName());
+		transitionElem.setAttribute(StateMachineTagNames.FROM, from.getName());
 		transitionElem.setAttribute(StateMachineTagNames.TO,  to.getName());
 
 		Element guardElem = guard.toElement(xmlDocument);

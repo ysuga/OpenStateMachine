@@ -1,7 +1,7 @@
 package net.ysuga.statemachine.guard;
 
-import net.ysuga.statemachine.State;
 import net.ysuga.statemachine.StateMachineTagNames;
+import net.ysuga.statemachine.state.State;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -54,7 +54,7 @@ public abstract class AbstractLogicGuard implements LogicGuard {
 	 
 	 
 	/**
-	 * @see net.ysuga.statemachine.guard.Guard#operate(net.ysuga.statemachine.State)
+	 * @see net.ysuga.statemachine.guard.Guard#operate(net.ysuga.statemachine.state.DefaultState)
 	 */
 	abstract public boolean operate(State state) throws Exception ;
 	
@@ -73,6 +73,7 @@ public abstract class AbstractLogicGuard implements LogicGuard {
 	 */
 	public Element toElement(Document xmlDocument) {
 		Element element = xmlDocument.createElement(StateMachineTagNames.GUARD);
+		element.setAttribute(StateMachineTagNames.NAME, getName());
 		element.setAttribute(StateMachineTagNames.KIND, getKind());
 		for(Guard guard : getChildGuards()) {
 			element.appendChild(guard.toElement(xmlDocument));
@@ -80,6 +81,16 @@ public abstract class AbstractLogicGuard implements LogicGuard {
 		return element;
 	}
 	 
+	
+	public String toString() {
+		StringBuffer buffer = new StringBuffer();
+		buffer.append("Guard:");
+		buffer.append(getKind());
+		buffer.append("(");
+		buffer.append(getName());
+		buffer.append(")");
+		return buffer.toString();
+	}
 	
 }
  

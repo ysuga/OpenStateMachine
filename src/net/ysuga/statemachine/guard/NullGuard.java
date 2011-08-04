@@ -1,57 +1,66 @@
 /**
- * AndGuardFactory.java
+ * NullGuard.java
  *
  * @author Yuki Suga (ysuga.net)
- * @date 2011/07/31
+ * @date 2011/08/04
  * @copyright 2011, ysuga.net allrights reserved.
  *
  */
 package net.ysuga.statemachine.guard;
 
 import net.ysuga.statemachine.StateMachineTagNames;
-
-import org.w3c.dom.Node;
+import net.ysuga.statemachine.state.State;
 
 /**
  * @author ysuga
  *
  */
-public class NotGuardFactory extends AbstractLogicGuardFactory {
+public class NullGuard extends AbstractGuard {
 
-	
 	/**
 	 * <div lang="ja">
 	 * コンストラクタ
+	 * @param name
 	 * @param kind
 	 * </div>
 	 * <div lang="en">
 	 * Constructor
+	 * @param name
 	 * @param kind
 	 * </div>
 	 */
-	public NotGuardFactory() {
-		super(StateMachineTagNames.NOT);
+	public NullGuard(String name) {
+		super(name, StateMachineTagNames.NULLGUARD);
 	}
 
 	/**
 	 * <div lang="ja">
-	 * @param name
-	 * @param guards
+	 * @param state
 	 * @return
 	 * @throws Exception
 	 * </div>
 	 * <div lang="en">
-	 * @param name
-	 * @param guards
+	 * @param state
 	 * @return
 	 * @throws Exception
 	 * </div>
 	 */
 	@Override
-	public Guard createGuard(String name, Guard[] guards) throws Exception {
-		return new NotGuard(name, guards[0]);
+	public boolean operate(State state) throws Exception {
+		return true;
 	}
 
-
+	/**
+	 * <div lang="ja">
+	 * @return
+	 * </div>
+	 * <div lang="en">
+	 * @return
+	 * </div>
+	 */
+	@Override
+	public GuardParameterMap getParameterMap() {
+		return new GuardParameterMap();
+	}
 
 }

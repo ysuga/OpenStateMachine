@@ -1,36 +1,37 @@
 /**
- * GuardFactoryManager.java
+ * StateFactoryManager.java
  *
  * @author Yuki Suga (ysuga.net)
- * @date 2011/07/31
+ * @date 2011/08/04
  * @copyright 2011, ysuga.net allrights reserved.
  *
  */
-package net.ysuga.statemachine.guard;
+package net.ysuga.statemachine.state;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import net.ysuga.statemachine.guard.GuardFactory;
+import net.ysuga.statemachine.guard.GuardFactoryManager;
 
 /**
  * @author ysuga
  *
  */
-public class GuardFactoryManager {
-
+public class StateFactoryManager {
 	static Logger logger;
 	
 	static {
-		logger = Logger.getLogger("net.ysuga.statemachine.guard.GuardFactoryManager");
+		logger = Logger.getLogger("net.ysuga.statemachine.state.StateFactoryManager");
 	}
-	Map<String, GuardFactory> guardFactoryMap;
+	Map<String, StateFactory> stateFactoryMap;
 	
-	static private GuardFactoryManager instance;
+	static private StateFactoryManager instance;
 	
-	static final public GuardFactoryManager getInstance() {
+	static final public StateFactoryManager getInstance() {
 		if(instance == null) {
-			instance = new GuardFactoryManager();
+			instance = new StateFactoryManager();
 		}
 		
 		return instance;
@@ -44,9 +45,9 @@ public class GuardFactoryManager {
 	 * Constructor
 	 * </div>
 	 */
-	private GuardFactoryManager() {
+	private StateFactoryManager() {
 		super();
-		guardFactoryMap = new HashMap<String, GuardFactory>();
+		stateFactoryMap = new HashMap<String, StateFactory>();
 	}
 
 	/**
@@ -59,10 +60,10 @@ public class GuardFactoryManager {
 	 * @param factory
 	 * </div>
 	 */
-	static public void add(GuardFactory factory) {
-		GuardFactoryManager manager = GuardFactoryManager.getInstance();
-		logger.entering(GuardFactoryManager.class.getName(), "add", factory);
-		manager.guardFactoryMap.put(factory.getKind(), factory);
+	static public void add(StateFactory factory) {
+		StateFactoryManager manager = StateFactoryManager.getInstance();
+		logger.entering(StateFactoryManager.class.getName(), "add", factory);
+		manager.stateFactoryMap.put(factory.getKind(), factory);
 	}
 
 	/**
@@ -77,8 +78,8 @@ public class GuardFactoryManager {
 	 * @throws Exception
 	 * </div>
 	 */
-	public GuardFactory get(String kind) {
-		GuardFactory factory = guardFactoryMap.get(kind);
+	public StateFactory get(String kind) {
+		StateFactory factory = stateFactoryMap.get(kind);
 		return factory;
 	}
 
@@ -91,7 +92,7 @@ public class GuardFactoryManager {
 	 * </div>
 	 */
 	public void remove(String kind) {
-		guardFactoryMap.remove(kind);
+		stateFactoryMap.remove(kind);
 	}
 
 	/**
@@ -102,8 +103,7 @@ public class GuardFactoryManager {
 	 * @param factory
 	 * </div>
 	 */
-	public void remove(GuardFactory factory) {
-		guardFactoryMap.remove(factory.getKind());
+	public void remove(StateFactory factory) {
+		stateFactoryMap.remove(factory.getKind());
 	}
-
 }
