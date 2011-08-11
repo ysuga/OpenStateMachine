@@ -8,6 +8,7 @@
  */
 package net.ysuga.statemachine.state;
 
+import net.ysuga.statemachine.StateMachine;
 import net.ysuga.statemachine.exception.InvalidFSMFileException;
 
 import org.w3c.dom.Element;

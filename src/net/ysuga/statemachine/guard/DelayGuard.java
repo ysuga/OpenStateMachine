@@ -5,6 +5,7 @@ import java.util.Map;
 
 import net.ysuga.statemachine.StateMachineTagNames;
 import net.ysuga.statemachine.state.State;
+import net.ysuga.statemachine.util.ParameterMap;
 
 /***
  * DelayGuardクラス．規定時間だけ待つガード
@@ -48,8 +49,8 @@ public class DelayGuard extends AbstractGuard {
 	 * </div>
 	 */
 	@Override
-	public GuardParameterMap getParameterMap() {
-		GuardParameterMap map = new GuardParameterMap();
+	public ParameterMap getParameterMap() {
+		ParameterMap map = new ParameterMap();
 		map.put(INTERVAL, Integer.toString(milliSeconds));
 		return map;
 	}

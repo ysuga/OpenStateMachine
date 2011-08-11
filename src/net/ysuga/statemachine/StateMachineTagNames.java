@@ -64,6 +64,14 @@ public interface StateMachineTagNames {
 
 	public String Y = "y";
 
+	public String ORDER = "order";
+
+	public String START = "start";
+
+	public String EXIT = "exit";
+
+	public String CONDITION = "condition";
+
 
 
 }

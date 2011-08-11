@@ -8,6 +8,8 @@
  */
 package net.ysuga.statemachine.state;
 
+import net.ysuga.statemachine.StateMachineTagNames;
+
 
 /**
  * @author ysuga
@@ -26,8 +28,9 @@ public class StartState extends DefaultState {
 	 * </div>
 	 */
 	public StartState() {
-		super("start");
+		super(StateMachineTagNames.START);
 		stateCondition = StateCondition.ACTIVE;
+		initialStateCondition =StateCondition.ACTIVE;
 	}
 
 }

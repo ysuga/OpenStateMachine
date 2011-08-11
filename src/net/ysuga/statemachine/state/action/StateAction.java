@@ -6,7 +6,12 @@
  * @copyright 2011, ysuga.net allrights reserved.
  *
  */
-package net.ysuga.statemachine.state;
+package net.ysuga.statemachine.state.action;
+
+import net.ysuga.statemachine.state.State;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 
 /**
@@ -30,6 +35,8 @@ public interface StateAction {
 	 */
 	public void actionPerformed(State state) throws Exception;
 	
-	public String toString();
+	public String getKind();
+	
+	public Element toElement(Document xmlDocument);
 
 }

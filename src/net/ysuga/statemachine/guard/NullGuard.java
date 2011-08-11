@@ -10,6 +10,7 @@ package net.ysuga.statemachine.guard;
 
 import net.ysuga.statemachine.StateMachineTagNames;
 import net.ysuga.statemachine.state.State;
+import net.ysuga.statemachine.util.ParameterMap;
 
 /**
  * @author ysuga
@@ -59,8 +60,8 @@ public class NullGuard extends AbstractGuard {
 	 * </div>
 	 */
 	@Override
-	public GuardParameterMap getParameterMap() {
-		return new GuardParameterMap();
+	public ParameterMap getParameterMap() {
+		return new ParameterMap();
 	}
 
 }

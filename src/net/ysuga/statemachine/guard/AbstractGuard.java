@@ -4,6 +4,7 @@ import java.util.Map;
 
 import net.ysuga.statemachine.StateMachineTagNames;
 import net.ysuga.statemachine.state.State;
+import net.ysuga.statemachine.util.ParameterMap;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -78,23 +79,14 @@ public abstract class AbstractGuard implements Guard {
 		Element element = xmlDocument.createElement(StateMachineTagNames.GUARD);
 		element.setAttribute(StateMachineTagNames.NAME, getName());
 		element.setAttribute(StateMachineTagNames.KIND, getKind());
-		Element paramElement = xmlDocument.createElement(StateMachineTagNames.PARAMETER);
+		Element paramElement = getParameterMap().toElement(xmlDocument);
 		element.appendChild(paramElement);
-		Map<String, String> parameterMap = getParameterMap();
-		if(parameterMap != null) {
-			for(String key : parameterMap.keySet()) {
-				String value = parameterMap.get(key);
-				Element keyElement = xmlDocument.createElement(key);
-				Text valueElement = xmlDocument.createTextNode(value);
-				keyElement.appendChild(valueElement);
-				paramElement.appendChild(keyElement);
-			}
-		}
+		
 		return element;
 	}
 	 
 	
-	abstract public GuardParameterMap getParameterMap();
+	abstract public ParameterMap getParameterMap();
 	
 	public String toString() {
 		return "Guard:"+getKind()+"("+getName() + ")";

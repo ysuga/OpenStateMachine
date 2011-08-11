@@ -7,6 +7,7 @@ import javax.xml.transform.TransformerFactoryConfigurationError;
 
 import net.ysuga.statemachine.StateMachine;
 import net.ysuga.statemachine.exception.InvalidConnectionException;
+import net.ysuga.statemachine.exception.InvalidStateNameException;
 import net.ysuga.statemachine.guard.DelayGuard;
 import net.ysuga.statemachine.guard.NullGuard;
 import net.ysuga.statemachine.state.ExitState;
@@ -76,6 +77,9 @@ public class StateMachineTest {
 			e.printStackTrace();
 		} catch (InvalidConnectionException e) {
 			// TODO é©ìÆê∂ê¨Ç≥ÇÍÇΩ catch ÉuÉçÉbÉN
+			e.printStackTrace();
+		} catch (InvalidStateNameException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

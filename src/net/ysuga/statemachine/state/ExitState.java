@@ -8,6 +8,7 @@
  */
 package net.ysuga.statemachine.state;
 
+import net.ysuga.statemachine.StateMachineTagNames;
 import net.ysuga.statemachine.exception.InvalidConnectionException;
 import net.ysuga.statemachine.guard.Guard;
 
@@ -28,7 +29,7 @@ public class ExitState extends DefaultState {
 	 * </div>
 	 */
 	public ExitState() {
-		super("exit");
+		super(StateMachineTagNames.EXIT);
 	}
 	
 	/**

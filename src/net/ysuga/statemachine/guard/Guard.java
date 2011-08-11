@@ -1,11 +1,9 @@
 package net.ysuga.statemachine.guard;
 
-import net.ysuga.statemachine.ModelElement;
 import net.ysuga.statemachine.state.State;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 
 
 /**
@@ -20,7 +18,7 @@ import org.w3c.dom.Node;
  * @copyright ysuga.net 2011, all rights reserved.
  * 
  */
-public interface Guard extends ModelElement {
+public interface Guard {
  
 	/**
 	 * @throws Exception 

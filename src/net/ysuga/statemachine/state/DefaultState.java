@@ -1,18 +1,21 @@
 package net.ysuga.statemachine.state;
 
-import java.util.ArrayList;
+import java.awt.Point;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Logger;
 
 import net.ysuga.statemachine.StateMachineTagNames;
-import net.ysuga.statemachine.Transition;
 import net.ysuga.statemachine.exception.InvalidConnectionException;
 import net.ysuga.statemachine.guard.Guard;
+import net.ysuga.statemachine.state.action.StateAction;
+import net.ysuga.statemachine.state.action.StateActionList;
+import net.ysuga.statemachine.transition.Transition;
+import net.ysuga.statemachine.transition.TransitionMap;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.Text;
 
 /**
  * @author Yuki Suga (ysuga.net)
@@ -37,6 +40,38 @@ public class DefaultState implements State {
 	
 	private String name;
 
+	private TransitionMap transitionMap;
+	
+	@Override
+	public TransitionMap getTransitionMap() {
+		return transitionMap;
+	}
+
+	private StateActionList onEntryActions;
+	
+	public StateActionList getOnEntryActionList() { return onEntryActions;}
+	
+	private StateActionList onExitActions;
+	
+	public StateActionList getOnExitActionList() { return onExitActions;}
+
+	private StateActionList onOperateActions;
+	
+	public StateActionList getOnOperateActionList() {
+		return onOperateActions;
+	}
+
+	protected StateCondition stateCondition = StateCondition.INACTIVE;
+	
+	protected StateCondition initialStateCondition = StateCondition.INACTIVE;
+	
+	public StateCondition getInitialStateCondition() {
+		return initialStateCondition;
+	}
+	
+	protected void setInitialStateCondition(StateCondition condition) {
+		initialStateCondition = condition;
+	}
 	/**
 	 * 
 	 * <div lang="ja">
@@ -67,15 +102,6 @@ public class DefaultState implements State {
 	}
 	
 	
-	private Map<String, Transition> transitionMap;
-
-	private ArrayList<StateAction> onEntryActions;
-	
-	private ArrayList<StateAction> onExitActions;
-	
-	private ArrayList<StateAction> onOperateActions;
-	
-	protected StateCondition stateCondition = StateCondition.INACTIVE;
 	
 	/**
 	 * 
@@ -145,6 +171,35 @@ public class DefaultState implements State {
 		this.y = y;
 	}
 	
+	/**
+	 * 
+	 * <div lang="ja">
+	 * @param x
+	 * @param y
+	 * </div>
+	 * <div lang="en">
+	 * @param y
+	 * </div>
+	 */
+	public final void setLocation(Point p) {
+		setLocation(p.x, p.y);
+	}
+
+	/**
+	 * 
+	 * <div lang="ja">
+	 * @param x
+	 * @param y
+	 * </div>
+	 * <div lang="en">
+	 * @param x
+	 * @param y
+	 * </div>
+	 */
+	public final void setLocation(int x, int y) {
+		this.x = x < 0 ? 0 : x;
+		this.y = y < 0 ? 0 : y;
+	}
 	
 	/**
 	 * 
@@ -160,10 +215,10 @@ public class DefaultState implements State {
 	public DefaultState(String name) {
 		this.setName(name);
 		this.kind = StateMachineTagNames.DEFAULT_STATE;
-		transitionMap = new HashMap<String, Transition>();
-		onEntryActions = new ArrayList<StateAction>();
-		onExitActions = new ArrayList<StateAction>();
-		onOperateActions = new ArrayList<StateAction>();
+		transitionMap = new TransitionMap();
+		onEntryActions = new StateActionList();
+		onExitActions = new StateActionList();
+		onOperateActions = new StateActionList();
 		setX(0); setY(0);
 	}
 	
@@ -209,17 +264,16 @@ public class DefaultState implements State {
 	public Element toElement(Document xmlDocument) {
 		Element stateElem = xmlDocument.createElement(StateMachineTagNames.STATE);
 		stateElem.setAttribute(StateMachineTagNames.NAME, getName());
-		stateElem.setAttribute(StateMachineTagNames.INITIAL_STATE, getStateCondition().toString());
+		stateElem.setAttribute(StateMachineTagNames.INITIAL_STATE, getInitialStateCondition().toString());
+		stateElem.setAttribute(StateMachineTagNames.CONDITION, getStateCondition().toString());
 		stateElem.setAttribute(StateMachineTagNames.KIND, getKind());
 		stateElem.setAttribute(StateMachineTagNames.X, Integer.toString(getX()));
 		stateElem.setAttribute(StateMachineTagNames.Y, Integer.toString(getY()));
 
 		Element onEntryElem = xmlDocument.createElement(StateMachineTagNames.ONENTRY);
 		for(StateAction action : onEntryActions) {
-			Element actionElem = xmlDocument.createElement(StateMachineTagNames.STATEACTION);
-			actionElem.setAttribute(StateMachineTagNames.ID, Integer.toString(onEntryActions.indexOf(action)));
-			Text text = xmlDocument.createTextNode(action.toString());
-			actionElem.appendChild(text);
+			Element actionElem = action.toElement(xmlDocument);
+			actionElem.setAttribute(StateMachineTagNames.ORDER, Integer.toString(onEntryActions.indexOf(action)));
 			onEntryElem.appendChild(actionElem);
 		}
 		stateElem.appendChild(onEntryElem);
@@ -227,20 +281,16 @@ public class DefaultState implements State {
 		
 		Element onExitElem = xmlDocument.createElement(StateMachineTagNames.ONEXIT);
 		for(StateAction action : onExitActions) {
-			Element actionElem = xmlDocument.createElement(StateMachineTagNames.STATEACTION);
-			actionElem.setAttribute(StateMachineTagNames.ID, Integer.toString(onExitActions.indexOf(action)));
-			Text text = xmlDocument.createTextNode(action.toString());
-			actionElem.appendChild(text);
+			Element actionElem = action.toElement(xmlDocument);
+			actionElem.setAttribute(StateMachineTagNames.ORDER, Integer.toString(onExitActions.indexOf(action)));
 			onExitElem.appendChild(actionElem);
 		}
 		stateElem.appendChild(onExitElem);
 	
 		Element onOperateElem = xmlDocument.createElement(StateMachineTagNames.ONOPERATE);
 		for(StateAction action : onOperateActions) {
-			Element actionElem = xmlDocument.createElement(StateMachineTagNames.STATEACTION);
-			actionElem.setAttribute(StateMachineTagNames.ID, Integer.toString(onOperateActions.indexOf(action)));
-			Text text = xmlDocument.createTextNode(action.toString());
-			actionElem.appendChild(text);
+			Element actionElem = action.toElement(xmlDocument);
+			actionElem.setAttribute(StateMachineTagNames.ORDER, Integer.toString(onOperateActions.indexOf(action)));
 			onOperateElem.appendChild(actionElem);
 		}
 		stateElem.appendChild(onOperateElem);
@@ -346,5 +396,28 @@ public class DefaultState implements State {
 	
 	public String toString() {
 		return "State("+getName()+")";
+	}
+	
+	
+	public void vanish() {
+		Set<String> keySet = transitionMap.keySet();
+		for(String key : keySet) {
+			Transition transition = transitionMap.get(key);
+			transition.vanish();
+			transitionMap.remove(transition);
+		}
+	}
+
+	/**
+	 * <div lang="ja">
+	 * @return
+	 * </div>
+	 * <div lang="en">
+	 * @return
+	 * </div>
+	 */
+	@Override
+	public Point getLocation() {
+		return new Point(getX(), getY());
 	}
 }
