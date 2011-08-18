@@ -408,6 +408,19 @@ public class StateMachine {
 		try {
 			add(state);
 			state.setLocation(oldState.getLocation());
+			for(String key : oldState.getTransitionMap().keySet()) {
+				Transition transition = oldState.getTransitionMap().get(key);
+				transition.setSourceState(state);
+				state.getTransitionMap().put(key, transition);
+			}
+			
+			for(State stateBuf : getStateMap().values()) {
+				for(Transition transition : stateBuf.getTransitionMap().values()) {
+					if(transition.getTargetState().equals(oldState)) {
+						transition.setTargetState(state);
+					}
+				}
+			}
 		} catch (InvalidStateNameException ex) {
 			add(oldState);
 			throw ex;

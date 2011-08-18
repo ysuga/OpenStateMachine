@@ -10,6 +10,7 @@ package net.ysuga.statemachine.guard;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Logger;
 
 
@@ -104,6 +105,18 @@ public class GuardFactoryManager {
 	 */
 	public void remove(GuardFactory factory) {
 		guardFactoryMap.remove(factory.getKind());
+	}
+
+	/**
+	 * <div lang="ja">
+	 *
+	 * </div>
+	 * <div lang="en">
+	 *
+	 * </div>
+	 */
+	public Set<String> getKindSet() {
+		return guardFactoryMap.keySet();
 	}
 
 }

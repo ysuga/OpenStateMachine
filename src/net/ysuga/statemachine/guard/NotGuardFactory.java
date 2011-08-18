@@ -52,6 +52,20 @@ public class NotGuardFactory extends AbstractLogicGuardFactory {
 		return new NotGuard(name, guards[0]);
 	}
 
+	/**
+	 * <div lang="ja">
+	 * @return
+	 * </div>
+	 * <div lang="en">
+	 * @return
+	 * </div>
+	 */
+	@Override
+	public GuardProfile getGuardProfile() {
+		// TODO 自動生成されたメソッド・スタブ
+		return null;
+	}
+
 
 
 }

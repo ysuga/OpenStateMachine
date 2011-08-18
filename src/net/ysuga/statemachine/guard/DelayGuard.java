@@ -40,6 +40,7 @@ public class DelayGuard extends AbstractGuard {
 	}
 
 	final static public String INTERVAL = "interval"; 
+	
 	/**
 	 * <div lang="ja">
 	 * @return

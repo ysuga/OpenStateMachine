@@ -51,6 +51,20 @@ public class OrGuardFactory extends AbstractLogicGuardFactory {
 		return new OrGuard(name, guards);
 	}
 
+	/**
+	 * <div lang="ja">
+	 * @return
+	 * </div>
+	 * <div lang="en">
+	 * @return
+	 * </div>
+	 */
+	@Override
+	public GuardProfile getGuardProfile() {
+		// TODO 自動生成されたメソッド・スタブ
+		return null;
+	}
+
 
 
 }

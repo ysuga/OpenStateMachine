@@ -52,6 +52,20 @@ public class ExorGuardFactory extends AbstractLogicGuardFactory {
 		return new ExorGuard(name, guards);
 	}
 
+	/**
+	 * <div lang="ja">
+	 * @return
+	 * </div>
+	 * <div lang="en">
+	 * @return
+	 * </div>
+	 */
+	@Override
+	public GuardProfile getGuardProfile() {
+		// TODO 自動生成されたメソッド・スタブ
+		return null;
+	}
+
 
 
 }

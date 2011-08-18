@@ -34,4 +34,6 @@ public interface GuardFactory {
 	public Guard loadGuard(org.w3c.dom.Node node) throws InvalidFSMFileException;
 	
 	public String getKind();
+	
+	public GuardProfile getGuardProfile();
 }

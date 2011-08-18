@@ -8,7 +8,7 @@
  */
 package net.ysuga.statemachine.guard;
 
-import java.util.Map;
+import java.util.ArrayList;
 
 import net.ysuga.statemachine.StateMachineTagNames;
 import net.ysuga.statemachine.util.ParameterMap;
@@ -50,6 +50,20 @@ public class DelayGuardFactory extends AbstractGuardFactory {
 	public Guard createGuard(String name, ParameterMap parameterMap) {
 		String interval = parameterMap.get(DelayGuard.INTERVAL);
 		return new DelayGuard(name, Integer.parseInt(interval));
+	}
+
+	/**
+	 * <div lang="ja">
+	 * @return
+	 * </div>
+	 * <div lang="en">
+	 * @return
+	 * </div>
+	 */
+	@Override
+	public GuardProfile getGuardProfile() {
+		GuardProfile prof = new GuardProfile(getKind(), DelayGuard.INTERVAL, new ArrayList<String>());
+		return prof;
 	}
 
 
