@@ -8,14 +8,14 @@
  */
 package net.ysuga.statemachine.state;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 
 /**
  * @author ysuga
  *
  */
-public class StateMap extends HashMap<String, State> {
-	public StateMap() {
+public class StateCollection extends ArrayList<State> {
+	public StateCollection() {
 		super();
 	}
 }

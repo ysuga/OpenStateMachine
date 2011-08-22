@@ -62,10 +62,11 @@ public class DefaultState implements State {
 	}
 
 	protected StateCondition stateCondition = StateCondition.INACTIVE;
+	protected StateCondition stateConditionBuffer = null;
 	
 	protected StateCondition initialStateCondition = StateCondition.INACTIVE;
 	
-	public StateCondition getInitialStateCondition() {
+	final public StateCondition getInitialStateCondition() {
 		return initialStateCondition;
 	}
 	
@@ -135,6 +136,25 @@ public class DefaultState implements State {
 	@Override
 	public void setStateCondition(StateCondition state) {
 		this.stateCondition = state;
+	}
+	
+	@Override
+	public void setStateConditionImmediately(StateCondition state) throws Exception {
+		if(state.equals(StateCondition.ACTIVE) && stateCondition.equals(StateCondition.INACTIVE)) {
+			// Activate
+			onEntry();
+			this.stateCondition = state;
+		} else if(state.equals(StateCondition.INACTIVE) && stateCondition.equals(StateCondition.ACTIVE)) {
+			onExit();
+			this.stateCondition = state;
+		}
+	}
+	
+	@Override
+	public void updateStateCondition() throws Exception {
+		if(stateConditionBuffer != null) {
+			setStateConditionImmediately(stateConditionBuffer);
+		}
 	}
 	
 	private int x;

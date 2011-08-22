@@ -1,6 +1,7 @@
 package net.ysuga.statemachine.guard;
 
 import net.ysuga.statemachine.StateMachineTagNames;
+import net.ysuga.statemachine.exception.InvalidGuardException;
 import net.ysuga.statemachine.state.State;
 
 
@@ -39,8 +40,9 @@ public class ExorGuard extends AbstractLogicGuard {
 	 * 
 	 * @param name
 	 * @param condition
+	 * @throws InvalidGuardException 
 	 */
-	public ExorGuard(String name, Guard[] condition) {
+	public ExorGuard(String name, Guard[] condition) throws InvalidGuardException {
 		super(name, StateMachineTagNames.EXOR, condition);
 	}
 	 

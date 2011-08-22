@@ -79,7 +79,7 @@ public class DefaultStateFactory implements StateFactory {
 		int x = Integer.parseInt(attributes
 				.getNamedItem(StateMachineTagNames.X).getNodeValue());
 		int y = Integer.parseInt(attributes
-				.getNamedItem(StateMachineTagNames.X).getNodeValue());
+				.getNamedItem(StateMachineTagNames.Y).getNodeValue());
 
 		DefaultState state = new DefaultState(name);
 		

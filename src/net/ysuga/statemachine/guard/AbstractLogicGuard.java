@@ -1,6 +1,7 @@
 package net.ysuga.statemachine.guard;
 
 import net.ysuga.statemachine.StateMachineTagNames;
+import net.ysuga.statemachine.exception.InvalidGuardException;
 import net.ysuga.statemachine.state.State;
 
 import org.w3c.dom.Document;
@@ -37,10 +38,16 @@ public abstract class AbstractLogicGuard implements LogicGuard {
 	/**
 	 * @brief constructor
 	 * @param name Name of this element
+	 * @throws InvalidGuardException 
 	 */
-	public AbstractLogicGuard(String name, String kind, Guard[] childGuards) {
+	public AbstractLogicGuard(String name, String kind, Guard[] childGuards) throws InvalidGuardException {
 		this.name = name;
 		this.kind = kind;
+		for(Guard g : childGuards) {
+			if(g == null) {
+				throw new InvalidGuardException();
+			}
+		}
 		this.guards = childGuards;
 	}
 	 

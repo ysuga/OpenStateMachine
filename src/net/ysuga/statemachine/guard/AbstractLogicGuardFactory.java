@@ -67,15 +67,20 @@ public abstract class AbstractLogicGuardFactory implements GuardFactory {
 		NodeList nodeList = node.getChildNodes();
 		for(int i = 0;i < nodeList.getLength();i++) {
 			Node childNode = nodeList.item(i);
-			if(childNode.getNodeValue().equals(StateMachineTagNames.GUARD)) {
+			if(childNode.getNodeName().equals(StateMachineTagNames.GUARD)) {
 				String kind = childNode.getAttributes().getNamedItem(StateMachineTagNames.KIND).getNodeValue();
 				GuardFactory factory = manager.get(kind);
-				Guard guard = factory.loadGuard(node);
+				Guard guard = factory.loadGuard(childNode);
 				guardList.add(guard);
 			}
 		}
-		
-		return (Guard[])guardList.toArray();
+		Guard[] guards = new Guard[guardList.size()];
+		int i = 0;
+		for(Guard guard : guardList) {
+			guards[i] = guard;
+			i++;
+		}
+		return guards;
 	}
 	
 	/**

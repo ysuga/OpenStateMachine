@@ -1,6 +1,7 @@
 package net.ysuga.statemachine.guard;
 
 import net.ysuga.statemachine.StateMachineTagNames;
+import net.ysuga.statemachine.exception.InvalidGuardException;
 import net.ysuga.statemachine.state.State;
 
 
@@ -30,7 +31,7 @@ public class NotGuard extends AbstractLogicGuard {
 	 * @param name
 	 * @param childGuard
 	 */
-	public NotGuard(String name, Guard childGuard) {
+	public NotGuard(String name, Guard childGuard) throws InvalidGuardException {
 		super(name, StateMachineTagNames.NOT, new Guard[]{childGuard});
 	}
 	 

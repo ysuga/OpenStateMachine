@@ -48,8 +48,14 @@ public interface State extends ModelElement {
 
 	public abstract void setStateCondition(StateCondition state) throws Exception;
 
+	public abstract void setStateConditionImmediately(StateCondition state) throws Exception;
+	
+	public abstract void updateStateCondition() throws Exception;
+	
 	public abstract StateCondition getStateCondition();
 
+	public abstract StateCondition getInitialStateCondition();
+	
 	public abstract String getName();
 
 	public abstract Map<String, Transition> transitionMap();

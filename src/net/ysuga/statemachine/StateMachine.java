@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -29,10 +30,10 @@ import net.ysuga.statemachine.guard.NullGuardFactory;
 import net.ysuga.statemachine.guard.OrGuardFactory;
 import net.ysuga.statemachine.state.DefaultStateFactory;
 import net.ysuga.statemachine.state.State;
+import net.ysuga.statemachine.state.StateCollection;
 import net.ysuga.statemachine.state.StateCondition;
 import net.ysuga.statemachine.state.StateFactory;
 import net.ysuga.statemachine.state.StateFactoryManager;
-import net.ysuga.statemachine.state.StateMap;
 import net.ysuga.statemachine.transition.Transition;
 
 import org.w3c.dom.Document;
@@ -43,12 +44,19 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 /**
+ * 
+ * <div lang="ja">
+ *　ステートマシンの本体．operateメソッドでactiveなステートを実行します．
+ *
+ * </div>
+ * <div lang="en">
+ *
+ * </div>
  * @author Yuki Suga (ysuga.net)
  * @brief State Machine System Framework
  * @date 2011/05/13
  * @license see lisence.txt
  * @copyright ysuga.net 2011, all rights reserved.
- * 
  */
 public class StateMachine {
 
@@ -56,34 +64,88 @@ public class StateMachine {
 	static {
 		logger = Logger.getLogger(StateMachine.class.getName());
 	}
+	
+	/**
+	 * Name of StateMachine
+	 */
 	private String name;
 
-	private StateMap stateMap;
-
-	// protected Element rootElement;
-
-	private Document xmlDocument;
-
 	/**
+	 * 
+	 * getName
 	 * <div lang="ja">
-	 * 
-	 * @throws Exception
-	 *             </div> <div lang="en">
-	 * 
-	 * @throws Exception
-	 *             </div>
+	 * StateMachineの名前の設定
+	 * @return
+	 * </div>
+	 * <div lang="en">
+	 * getter for Name of StateMachine
+	 * @return
+	 * </div>
 	 */
-	public void operate() throws Exception {
-		for (String name : stateMap.keySet()) {
-			State state = stateMap.get(name);
-			if (state.getStateCondition().equals(StateCondition.ACTIVE)) {
-				state.operate();
-			}
-		}
+	final public String getName() {
+		return name;
 	}
 
+	/**
+	 * 
+	 * setName
+	 * <div lang="ja">
+	 * 
+	 * @param name
+	 * </div>
+	 * <div lang="en">
+	 *　setter for name of StateMachine
+	 * @param name
+	 * </div>
+	 */
+	final public void setName(String name) {
+		this.name = name;
+	}
+	
+	private StateCollection stateCollection;
+
+	/**
+	 * 
+	 * getStateSet
+	 * <div lang="ja">
+	 * 
+	 * @return
+	 * </div>
+	 * <div lang="en">
+	 *
+	 * @return
+	 * </div>
+	 */
+	final public StateCollection getStateCollection() {
+		return stateCollection;
+	}
+	/**
+	 * 
+	 * getStateMap
+	 * <div lang="ja">
+	 * Stateの入っているMapの取得．
+	 * @return
+	 * </div>
+	 * <div lang="en">
+	 * getter for StateMap.
+	 * @return
+	 * </div>
+	 */
+	//final public StateMap getStateMap() {
+	//	return stateMap;
+	//}
+	
+	/**
+	 * 
+	 * <div lang="ja">
+	 * コンストラクタ
+	 * </div>
+	 * <div lang="en">
+	 * Constructor
+	 * </div>
+	 */
 	private StateMachine() {
-		stateMap = new StateMap();
+		stateCollection = new StateCollection();
 
 		GuardFactoryManager.add(new AndGuardFactory());
 		GuardFactoryManager.add(new OrGuardFactory());
@@ -94,33 +156,46 @@ public class StateMachine {
 
 		StateFactoryManager.add(new DefaultStateFactory());
 	}
-
+	
 	/**
-	 * <div lang="ja"> コンストラクタ
 	 * 
+	 * <div lang="ja">
+	 * コンストラクタ．名前のみ設定する空のStateMachineを作成
 	 * @param name
-	 *            </div> <div lang="en"> Constructor
-	 * @param name
-	 *            </div>
 	 * @throws ParserConfigurationException
+	 * </div>
+	 * <div lang="en">
+	 * Constructor. Construct Empty State Machine.
+	 * @param name
+	 * @throws ParserConfigurationException
+	 * </div>
 	 */
 	public StateMachine(String name) throws ParserConfigurationException {
 		this();
 		this.setName(name);
 		logger.entering(StateMachine.class.getName(), "init", name);
+	}	
 
-		// ドキュメントビルダーを作成
-		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-		dbf.setValidating(true);
-		DocumentBuilder db = null;
-		db = dbf.newDocumentBuilder();
-		xmlDocument = db.newDocument();
-	}
-
-	public String toString() {
-		return "StateMachine(" + getName() + ")";
-	}
-
+	
+	/**
+	 * 
+	 * <div lang="ja">
+	 * コンストラクタ．ファイルからロードする．
+	 * @param file
+	 * @throws InvalidFSMFileException
+	 * @throws ParserConfigurationException
+	 * @throws SAXException
+	 * @throws IOException
+	 * </div>
+	 * <div lang="en">
+	 * Constructor. Load from FSM file.
+	 * @param file
+	 * @throws InvalidFSMFileException
+	 * @throws ParserConfigurationException
+	 * @throws SAXException
+	 * @throws IOException
+	 * </div>
+	 */
 	public StateMachine(File file) throws InvalidFSMFileException,
 			ParserConfigurationException, SAXException, IOException {
 		this();
@@ -129,7 +204,7 @@ public class StateMachine {
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		DocumentBuilder db = null;
 		db = dbf.newDocumentBuilder();
-		xmlDocument = db.parse(file);
+		Document xmlDocument = db.parse(file);
 		Element rootElement = xmlDocument.getDocumentElement();
 		if (!rootElement.getNodeName().equals(StateMachineTagNames.FSM)) {
 			logger.warning("Invalid State Machine File");
@@ -166,26 +241,85 @@ public class StateMachine {
 		throw new InvalidFSMFileException();
 	}
 
+	
 	/**
 	 * 
+	 * operate
+	 * <div lang="ja">
+	 * ステートマシンの実行．このメソッドをmainなどで周期的に呼ぶ必要がある．
+	 * 
+	 * 内部ではアクティブなStateクラスのoperateを実行する．現行ではforで繰り返しているが，folkを使った場合の挙動を考えた場合，
+	 * マルチスレッド化する必要があると思う．
+	 * @throws Exception
+	 * </div>
+	 * <div lang="en">
+	 *
+	 * @throws Exception
+	 * </div>
+	 */
+	public void operate() throws Exception {
+		for (State state : stateCollection) {
+			if (state.getStateCondition().equals(StateCondition.ACTIVE)) {
+				state.operate();
+			}
+		}
+		// StateCondition is not updated immediately in order to prevent the state which is activated in this turn from operated.
+		// このターンでアクティブ化されたStateがoperateされないように，StateConditionはupdateされるまではactive化しません．
+		for (State state : stateCollection) {
+			state.updateStateCondition();
+		}
+	}
+
+
+
+
+	/**
+	 * 
+	 * <div lang="ja">
+	 * @return
+	 * </div>
+	 * <div lang="en">
+	 * @return
+	 * </div>
+	 */
+	public String toString() {
+		return "StateMachine(" + getName() + ")";
+	}
+
+
+	/**
+	 * 
+	 * save
 	 * <div lang="ja">
 	 * 
 	 * @param file
 	 * @throws TransformerFactoryConfigurationError
 	 * @throws FileNotFoundException
 	 * @throws TransformerException
-	 *             </div> <div lang="en">
-	 * 
+	 * @throws ParserConfigurationException
+	 * </div>
+	 * <div lang="en">
+	 *
 	 * @param file
 	 * @throws TransformerFactoryConfigurationError
 	 * @throws FileNotFoundException
 	 * @throws TransformerException
-	 *             </div>
+	 * @throws ParserConfigurationException
+	 * </div>
 	 */
 	public void save(File file) throws TransformerFactoryConfigurationError,
-			FileNotFoundException, TransformerException {
+			FileNotFoundException, TransformerException, ParserConfigurationException {
 		logger.entering(getClass().getName(), "save",
 				new Object[] { this, file });
+		
+		// ドキュメントビルダーを作成
+		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		dbf.setValidating(true);
+		DocumentBuilder db = null;
+		db = dbf.newDocumentBuilder();
+		Document xmlDocument = db.newDocument();
+		
+		
 		Element rootElement = xmlDocument
 				.createElement(StateMachineTagNames.FSM);
 		rootElement.setAttribute("Date", new Date().toString());
@@ -199,7 +333,7 @@ public class StateMachine {
 				.createElement(StateMachineTagNames.TRANSITIONS);
 		rootElement.appendChild(statesElement);
 		rootElement.appendChild(transitionsElement);
-		for (State state : stateMap.values()) {
+		for (State state : stateCollection) {
 			statesElement.appendChild(state.toElement(xmlDocument));
 
 			Map<String, Transition> transitionMap = state.transitionMap();
@@ -218,14 +352,17 @@ public class StateMachine {
 
 	/**
 	 * 
+	 * loadStates
 	 * <div lang="ja">
 	 * 
-	 * @param element
-	 *            </div> <div lang="en">
-	 * 
-	 * @param element
-	 *            </div>
+	 * @param node
 	 * @throws InvalidFSMFileException
+	 * </div>
+	 * <div lang="en">
+	 *
+	 * @param node
+	 * @throws InvalidFSMFileException
+	 * </div>
 	 */
 	public void loadStates(Node node) throws InvalidFSMFileException {
 		logger.entering(getClass().getName(), "loadStates", this);
@@ -254,17 +391,20 @@ public class StateMachine {
 
 	/**
 	 * 
+	 * loadTransitions
 	 * <div lang="ja">
 	 * 
-	 * @param element
-	 *            </div> <div lang="en">
-	 * 
-	 * @param element
-	 *            </div>
+	 * @param node
 	 * @throws InvalidFSMFileException
-	 * @throws InvalidConnectionException
+	 * </div>
+	 * <div lang="en">
+	 *
+	 * @param node
+	 * @throws InvalidFSMFileException
+	 * </div>
 	 */
-	public void loadTransitions(Node node) throws InvalidFSMFileException {
+
+	private void loadTransitions(Node node) throws InvalidFSMFileException {
 		logger.entering(getClass().getName(), "loadTransitions", this);
 		NodeList childNodeList = node.getChildNodes();
 		for (int i = 0; i < childNodeList.getLength(); i++) {
@@ -311,85 +451,91 @@ public class StateMachine {
 		}
 	}
 
-	/**
-	 * <div lang="ja">
-	 * 
-	 * @return </div> <div lang="en">
-	 * @return </div>
-	 */
-	public String getName() {
-		return name;
-	}
+
 
 	/**
+	 * 
+	 * getState
 	 * <div lang="ja">
-	 * 
+	 * 名前からStateの取得
 	 * @param name
-	 *            </div> <div lang="en">
-	 * 
+	 * @return
+	 * </div>
+	 * <div lang="en">
+	 * get State by Name
 	 * @param name
-	 *            </div>
-	 */
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	/**
-	 * <div lang="ja">
-	 * 
-	 * @param name
-	 * @return </div> <div lang="en">
-	 * 
-	 * @param name
-	 * @return </div>
+	 * @return
+	 * </div>
 	 */
 	final public State getState(String name) {
-		return stateMap.get(name);
+		for(State state : stateCollection) {
+			if(state.getName().equals(name)) {
+				return state;
+			}
+		}
+		//return stateMap.get(name);
+		return null;
 	}
 
 	/**
+	 * 
+	 * add
 	 * <div lang="ja">
 	 * 
 	 * @param state
-	 *            </div> <div lang="en">
-	 * 
+	 * @throws InvalidStateNameException
+	 * </div>
+	 * <div lang="en">
+	 *
 	 * @param state
-	 *            </div>
+	 * @throws InvalidStateNameException
+	 * </div>
 	 */
 	final public void add(State state) throws InvalidStateNameException {
 		logger.entering(getClass().getName(), "add",
 				new Object[] { this, state });
+		for(State ownedState : stateCollection) {
+			if(ownedState.getName().equals(state.getName())) {
+				throw new InvalidStateNameException();
+			}
+		}
+		stateCollection.add(state);
+		/*
 		if (stateMap.get(state.getName()) != null) {
 			throw new InvalidStateNameException();
 		}
+		
 		stateMap.put(state.getName(), state);
+		*/
 	}
 
 	/**
+	 * 
+	 * remove
 	 * <div lang="ja">
 	 * 
 	 * @param state
-	 *            </div> <div lang="en">
-	 * 
+	 * @return
+	 * </div>
+	 * <div lang="en">
+	 *
 	 * @param state
-	 *            </div>
+	 * @return
+	 * </div>
 	 */
 	final public State remove(State state) {
 		logger.entering(getClass().getName(), "remove", new Object[] { this,
 				state });
-		return stateMap.remove(state.getName());
+		//return stateMap.remove(state.getName());
+		if(stateCollection.contains(state)) {
+			//throw new Invalid
+			stateCollection.remove(state);
+			return state;
+		}
+		return null;
 	}
 
-	/**
-	 * <div lang="ja">
-	 * 
-	 * @return </div> <div lang="en">
-	 * 
-	 * @return </div>
-	 */
-	final public StateMap getStateMap() {
-		return stateMap;
-	}
+
 
 	/**
 	 * <div lang="ja">
@@ -414,7 +560,7 @@ public class StateMachine {
 				state.getTransitionMap().put(key, transition);
 			}
 			
-			for(State stateBuf : getStateMap().values()) {
+			for(State stateBuf : stateCollection) {
 				for(Transition transition : stateBuf.getTransitionMap().values()) {
 					if(transition.getTargetState().equals(oldState)) {
 						transition.setTargetState(state);

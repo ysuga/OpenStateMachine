@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<Fsm Date="Thu Aug 04 17:13:51 JST 2011" Version="3.0" name="MyMachine">
+<Fsm Date="Mon Aug 22 17:29:03 JST 2011" Version="3.0" name="MyMachine">
 <StateList>
-<State initial_state="ACTIVE" kind="DefaultState" name="start" x="0" y="0">
+<State condition="ACTIVE" initial_state="ACTIVE" kind="DefaultState" name="start" x="0" y="0">
 <OnEntryAction/>
 <OnExitAction/>
 <OnOperateAction/>
 </State>
-<State initial_state="INACTIVE" kind="DefaultState" name="State2" x="0" y="0">
+<State condition="INACTIVE" initial_state="INACTIVE" kind="DefaultState" name="exit" x="0" y="0">
 <OnEntryAction/>
 <OnExitAction/>
 <OnOperateAction/>
 </State>
-<State initial_state="INACTIVE" kind="DefaultState" name="State1" x="0" y="0">
+<State condition="INACTIVE" initial_state="INACTIVE" kind="DefaultState" name="State1" x="0" y="0">
 <OnEntryAction/>
 <OnExitAction/>
 <OnOperateAction/>
 </State>
-<State initial_state="INACTIVE" kind="DefaultState" name="exit" x="0" y="0">
+<State condition="INACTIVE" initial_state="INACTIVE" kind="DefaultState" name="State2" x="0" y="0">
 <OnEntryAction/>
 <OnExitAction/>
 <OnOperateAction/>
@@ -26,6 +26,14 @@
 <Transition name="startTransition" source="start" target="State1">
 <Guard kind="NULL" name="startGuard">
 <Parameter/>
+</Guard>
+<PivotList size="0"/>
+</Transition>
+<Transition name="myTransition1" source="State1" target="State2">
+<Guard kind="DELAY" name="myGuard1">
+<Parameter>
+<interval>500</interval>
+</Parameter>
 </Guard>
 <PivotList size="0"/>
 </Transition>
@@ -41,14 +49,6 @@
 <Guard kind="DELAY" name="exitGuard">
 <Parameter>
 <interval>5000</interval>
-</Parameter>
-</Guard>
-<PivotList size="0"/>
-</Transition>
-<Transition name="myTransition1" source="State1" target="State2">
-<Guard kind="DELAY" name="myGuard1">
-<Parameter>
-<interval>500</interval>
 </Parameter>
 </Guard>
 <PivotList size="0"/>

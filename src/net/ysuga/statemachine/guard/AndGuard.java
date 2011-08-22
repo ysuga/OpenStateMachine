@@ -1,6 +1,7 @@
 package net.ysuga.statemachine.guard;
 
 import net.ysuga.statemachine.StateMachineTagNames;
+import net.ysuga.statemachine.exception.InvalidGuardException;
 import net.ysuga.statemachine.state.State;
 
 
@@ -35,8 +36,9 @@ public class AndGuard extends AbstractLogicGuard {
 	 * 
 	 * @param name
 	 * @param condition
+	 * @throws InvalidGuardException 
 	 */
-	public AndGuard(String name, Guard[] condition) {
+	public AndGuard(String name, Guard[] condition) throws InvalidGuardException {
 		super(name, StateMachineTagNames.AND, condition);
 	}
 	 

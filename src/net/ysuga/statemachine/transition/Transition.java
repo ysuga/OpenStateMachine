@@ -50,10 +50,8 @@ public class Transition implements ModelElement {
 	
 	public boolean transit() throws Exception {
 		logger.entering(getClass().getName(), "transit", this);
-		from.onExit();
-		from.setStateCondition(StateCondition.INACTIVE);
+		from.setStateConditionImmediately(StateCondition.INACTIVE);
 		to.setStateCondition(StateCondition.ACTIVE);
-		to.onEntry();
 		return true;
 	}
 

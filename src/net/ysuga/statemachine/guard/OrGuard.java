@@ -1,6 +1,7 @@
 package net.ysuga.statemachine.guard;
 
 import net.ysuga.statemachine.StateMachineTagNames;
+import net.ysuga.statemachine.exception.InvalidGuardException;
 import net.ysuga.statemachine.state.State;
 
 
@@ -33,8 +34,9 @@ public class OrGuard extends AbstractLogicGuard {
 	 * 
 	 * @param name
 	 * @param condition
+	 * @throws InvalidGuardException 
 	 */
-	public OrGuard(String name, Guard[] condition) {
+	public OrGuard(String name, Guard[] condition) throws InvalidGuardException {
 		super(name, StateMachineTagNames.OR, condition);
 	}
 	 
