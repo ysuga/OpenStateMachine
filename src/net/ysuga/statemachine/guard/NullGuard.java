@@ -64,4 +64,9 @@ public class NullGuard extends AbstractGuard {
 		return new ParameterMap();
 	}
 
+	public void onInitialize(State state) {
+	}
+	
+	public void onFinalize(State state) {	
+	}
 }

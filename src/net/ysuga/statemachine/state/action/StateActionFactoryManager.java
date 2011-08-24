@@ -10,10 +10,8 @@ package net.ysuga.statemachine.state.action;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Logger;
-
-import net.ysuga.statemachine.guard.GuardFactory;
-import net.ysuga.statemachine.guard.GuardFactoryManager;
 
 /**
  * @author ysuga
@@ -25,9 +23,15 @@ public class StateActionFactoryManager {
 	static {
 		logger = Logger.getLogger("net.ysuga.statemachine.state.StateFactoryManager");
 	}
+	
 	Map<String, StateActionFactory> stateFactoryMap;
 	
+	public Set<String> getKindSet() {
+		return stateFactoryMap.keySet();
+	}
+	
 	static private StateActionFactoryManager instance;
+	
 	
 	static final public StateActionFactoryManager getInstance() {
 		if(instance == null) {

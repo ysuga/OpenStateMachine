@@ -50,7 +50,7 @@ public class Transition implements ModelElement {
 	
 	public boolean transit() throws Exception {
 		logger.entering(getClass().getName(), "transit", this);
-		from.setStateConditionImmediately(StateCondition.INACTIVE);
+		from.setStateCondition(StateCondition.INACTIVE);
 		to.setStateCondition(StateCondition.ACTIVE);
 		return true;
 	}
@@ -160,5 +160,23 @@ public class Transition implements ModelElement {
 		to = state;
 	}
 
+	/**
+	 * onFinalize
+	 * <div lang="ja">
+	 * 
+	 * @param state
+	 * </div>
+	 * <div lang="en">
+	 *
+	 * @param state
+	 * </div>
+	 */
+	public void onFinalize(State state) {
+		this.guard.onFinalize(state);
+	}
+
+	public void onInitialize(State state) {
+		this.guard.onInitialize(state);
+	}
 
 }

@@ -8,10 +8,13 @@
  */
 package net.ysuga.statemachine.state.action;
 
+import net.ysuga.statemachine.exception.InvalidFSMFileException;
 import net.ysuga.statemachine.state.State;
+import net.ysuga.statemachine.util.ParameterMap;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 
 /**
@@ -38,5 +41,22 @@ public interface StateAction {
 	public String getKind();
 	
 	public Element toElement(Document xmlDocument);
+	
+	public ParameterMap getParameterMap();
+	
+	/**
+	 * 
+	 * setParameterMap
+	 * <div lang="ja">
+	 * 
+	 * @param parameterMap
+	 * </div>
+	 * <div lang="en">
+	 *
+	 * @param parameterMap
+	 * </div>
+	 */
+	abstract public void setParameterMap(ParameterMap parameterMap);
 
+	public void load(Node node) throws InvalidFSMFileException ;
 }

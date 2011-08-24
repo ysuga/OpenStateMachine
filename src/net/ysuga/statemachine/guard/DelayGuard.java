@@ -15,14 +15,23 @@ import net.ysuga.statemachine.util.ParameterMap;
  */
 public class DelayGuard extends AbstractGuard {
  
-	private int milliSeconds;
+	private long milliSeconds;
 	 
+	private boolean initFlag;
+	
+	private long startTime;
+	
 	/**
 	 * 規定時間だけ待ちます
 	 */
 	public boolean operate(State state) {
 		try {
-			Thread.sleep(milliSeconds);
+			long currentTime = System.currentTimeMillis();
+			if( (currentTime - startTime) > milliSeconds ) {
+				return true;
+			} else {
+				return false;
+			}
 		} catch( Exception ex ) {
 			
 		}
@@ -34,7 +43,7 @@ public class DelayGuard extends AbstractGuard {
 	 * @param name ガードの識別子
 	 * @param milliSeconds 待ち時間（単位ms）
 	 */
-	public DelayGuard(String name, int milliSeconds) {
+	public DelayGuard(String name, long milliSeconds) {
 		super(name, StateMachineTagNames.DELAY);
 		this.milliSeconds = milliSeconds;
 	}
@@ -52,9 +61,32 @@ public class DelayGuard extends AbstractGuard {
 	@Override
 	public ParameterMap getParameterMap() {
 		ParameterMap map = new ParameterMap();
-		map.put(INTERVAL, Integer.toString(milliSeconds));
+		map.put(INTERVAL, Long.toString(milliSeconds));
 		return map;
 	}
 	 
+	
+	public void onInitialize(State state) {
+		this.startTime = System.currentTimeMillis();
+	}
+	
+	public void onFinalize(State state) {
+		
+	}
+
+	/**
+	 * getInterval
+	 * <div lang="ja">
+	 * 
+	 * @return
+	 * </div>
+	 * <div lang="en">
+	 *
+	 * @return
+	 * </div>
+	 */
+	public long getInterval() {
+		return milliSeconds;
+	}
 }
  

@@ -99,5 +99,19 @@ public abstract class AbstractLogicGuard implements LogicGuard {
 		return buffer.toString();
 	}
 	
+	@Override
+	public void onInitialize(State state) {
+		for(Guard childGuard : guards) {
+			childGuard.onInitialize(state);
+		}
+	}
+
+	@Override
+	public void onFinalize(State state) {
+		for(Guard childGuard : guards) {
+			childGuard.onFinalize(state);
+		}
+	}
+
 }
  

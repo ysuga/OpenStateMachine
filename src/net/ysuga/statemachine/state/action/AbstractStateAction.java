@@ -9,10 +9,14 @@
 package net.ysuga.statemachine.state.action;
 
 import net.ysuga.statemachine.StateMachineTagNames;
+import net.ysuga.statemachine.exception.InvalidFSMFileException;
 import net.ysuga.statemachine.util.ParameterMap;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 /**
  * @author ysuga
@@ -66,6 +70,20 @@ public abstract class AbstractStateAction implements StateAction {
 		return elem;
 	}
 	
-	abstract public ParameterMap getParameterMap();
-
+	@Override
+	public void load(Node node)  throws InvalidFSMFileException {
+		NamedNodeMap attr = node.getAttributes();
+		String kind = attr.getNamedItem(StateMachineTagNames.KIND).getNodeValue();
+		this.kind = kind;
+		
+		ParameterMap parameterMap = null;
+		NodeList childNodeList = node.getChildNodes();
+		for(int i = 0;i < childNodeList.getLength();i++) {
+			Node childNode = childNodeList.item(i);
+			if(childNode.getNodeName().equals(StateMachineTagNames.PARAMETER)) {
+				parameterMap = ParameterMap.parseParameterMap(childNode);
+				setParameterMap(parameterMap);
+			}
+		}
+	}
 }

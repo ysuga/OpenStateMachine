@@ -72,6 +72,10 @@ public interface StateMachineTagNames {
 
 	public String CONDITION = "condition";
 
+	public String LOGGINGACTION = "LoggingStateAction";
+
+	public String MESSAGEBOXACTION = "MessageBoxAction";
+
 
 
 }

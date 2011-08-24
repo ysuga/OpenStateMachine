@@ -9,6 +9,7 @@
 package net.ysuga.statemachine.state.action;
 
 import net.ysuga.statemachine.StateMachineTagNames;
+import net.ysuga.statemachine.exception.InvalidFSMFileException;
 import net.ysuga.statemachine.util.ParameterMap;
 
 import org.w3c.dom.Node;
@@ -21,6 +22,8 @@ import org.w3c.dom.NodeList;
 public abstract class AbstractStateActionFactory implements StateActionFactory {
 
 	private String kind;
+	
+	
 	/**
 	 * <div lang="ja">
 	 * コンストラクタ
@@ -41,9 +44,11 @@ public abstract class AbstractStateActionFactory implements StateActionFactory {
 	 * <div lang="en">
 	 * @return
 	 * </div>
+	 * @throws InvalidFSMFileException 
 	 */
 	@Override
-	final public StateAction createStateAction(Node node) {
+	final public StateAction createStateAction(Node node) throws InvalidFSMFileException {
+		/*
 		ParameterMap parameterMap = null;
 		NodeList childNodeList = node.getChildNodes();
 		for(int i = 0;i < childNodeList.getLength();i++) {
@@ -53,9 +58,11 @@ public abstract class AbstractStateActionFactory implements StateActionFactory {
 			}
 		}
 		return buildStateAction(parameterMap);
+		*/
+		StateAction stateAction = createStateAction();
+		stateAction.load(node);
+		return stateAction;
 	}
-
-	public abstract StateAction buildStateAction(ParameterMap parameterMap);
 
 	/**
 	 * <div lang="ja">

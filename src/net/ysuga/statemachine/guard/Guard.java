@@ -25,6 +25,11 @@ public interface Guard {
 	 * @brief Check the guard condition is true or false.
 	 */
 	public abstract boolean operate(State state) throws Exception;
+	
+	public abstract void onInitialize(State state);
+	
+	public abstract void onFinalize(State state);
+	
 	/**
 	 * @brief get the name of this element
 	 * @return naem of element.

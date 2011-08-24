@@ -2,19 +2,31 @@ package net.ysuga.statemachine.state;
 
 
 /**
- * @author Yuki Suga (ysuga.net)
- * @brief State Machine System Framework
- * @date 2011/05/13
- * @license see lisence.txt
- * @copyright ysuga.net 2011, all rights reserved.
  * 
+ * <div lang="ja">
+ *　StateCondition．Stateの状態を表します．ACTIVEとINACTIVEという二つのオブジェクトしか持ちません．
+ * すべてのStateはこれらへの参照を持つのみです．
+ * </div>
+ * <div lang="en">
+ *　StateCondition. Condition of State. ACTIVE | INACTIVE. 
+ * This class has only two objects. Every State has the reference to these two.
+ * </div>
+ * @author ysuga
+ *
  */
 public class StateCondition {
  	 
-	public static final int ACTIVE_VALUE = 0;
-	public static final int INACTIVE_VALUE = 1;
+	private static final int ACTIVE_VALUE = 0;
+	private static final int INACTIVE_VALUE = 1;
 
+	/**
+	 * ACTIVE状態を指すStateConditionのオブジェクト
+	 */
 	public static final StateCondition ACTIVE = new StateCondition(ACTIVE_VALUE);
+	
+	/**
+	 * INACTIVE状態を指すStateConditionのオブジェクト
+	 */
 	public static final StateCondition INACTIVE = new StateCondition(INACTIVE_VALUE);
 	
 	private int state;
@@ -43,6 +55,7 @@ public class StateCondition {
 	/**
 	 * 
 	 * <div lang="ja">
+	 * toString method.
 	 * @return
 	 * </div>
 	 * <div lang="en">

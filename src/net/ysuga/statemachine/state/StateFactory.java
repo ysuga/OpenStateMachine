@@ -21,6 +21,7 @@ import org.w3c.dom.Element;
 public interface StateFactory {
 
 	public String getKind();
+	
 	/**
 	 * 
 	 * <div lang="ja">
