@@ -48,13 +48,12 @@ public interface StateMachineTagNames {
 
 	public String GUARD = "Guard";
 
-	public String AND = "AND";
-	public String EXOR = "EXOR";
-	public String OR = "OR";
-	public String NOT = "NOT";
-	public String DELAY = "DELAY";
-
-	public String NULLGUARD = "NULL";
+	public String AND = "And";
+	public String EXOR = "Exor";
+	public String OR = "Or";
+	public String NOT = "Not";
+	public String DELAY = "Delay";
+	public String NULLGUARD = "Null";
 
 	public String DEFAULT_STATE = "DefaultState";
 

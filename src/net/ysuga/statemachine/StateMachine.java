@@ -1,8 +1,10 @@
 package net.ysuga.statemachine;
 
+import java.awt.Point;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.logging.Logger;
@@ -170,7 +172,7 @@ public class StateMachine {
 		}
 	}
 
-	public void start() {
+	public void start() throws Exception {
 		reset();
 		synchronized(executionMutex) {
 			for(State state : stateCollection) {
@@ -462,7 +464,7 @@ public class StateMachine {
 			Node childNode = childNodeList.item(i);
 			if (childNode.getNodeName().equals(StateMachineTagNames.TRANSITION)) {
 				NamedNodeMap attributes = childNode.getAttributes();
-
+				ArrayList<Point> pivotList = new ArrayList<Point>();
 				String name = attributes
 						.getNamedItem(StateMachineTagNames.NAME).getNodeValue();
 
@@ -489,10 +491,23 @@ public class StateMachine {
 							throw new InvalidFSMFileException();
 						}
 						guard = guardFactory.loadGuard(grandChildNode);
+					} else if(grandChildNode.getNodeName().equals(StateMachineTagNames.PIVOTLIST)){
+						NodeList pivotNodeList = grandChildNode.getChildNodes();
+						for(int k = 0;k < pivotNodeList.getLength();k++) {
+							Node pivotNode = pivotNodeList.item(k);
+							if(pivotNode.getNodeName().equals(StateMachineTagNames.PIVOT)) {
+								NamedNodeMap pivotAttr = pivotNode.getAttributes();
+								int index = Integer.parseInt(pivotAttr.getNamedItem(StateMachineTagNames.INDEX).getNodeValue());
+								int x = Integer.parseInt(pivotAttr.getNamedItem(StateMachineTagNames.X).getNodeValue());
+								int y = Integer.parseInt(pivotAttr.getNamedItem(StateMachineTagNames.Y).getNodeValue());
+								pivotList.add(index, new Point(x, y));
+							}
+						}
 					}
 				}
 				try {
 					sourceState.connect(name, targetState, guard);
+					sourceState.getTransition(name).getPivotList().addAll(pivotList);
 				} catch (InvalidConnectionException e) {
 					e.printStackTrace();
 					throw new InvalidFSMFileException();

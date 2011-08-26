@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<Fsm Date="Mon Aug 22 17:29:03 JST 2011" Version="3.0" name="MyMachine">
+<Fsm Date="Fri Aug 26 15:06:10 JST 2011" Version="3.0" name="MyMachine">
 <StateList>
 <State condition="ACTIVE" initial_state="ACTIVE" kind="DefaultState" name="start" x="0" y="0">
 <OnEntryAction/>

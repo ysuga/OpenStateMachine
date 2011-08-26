@@ -8,6 +8,8 @@
  */
 package net.ysuga.statemachine;
 
+import java.util.logging.Logger;
+
 /**
  * <div lang="ja">
  *
@@ -20,6 +22,8 @@ package net.ysuga.statemachine;
  */
 public class StateMachineExecutionThread extends Thread {
 
+	static private Logger logger = Logger.getLogger(StateMachineExecutionThread.class.getName());
+	
 	private StateMachine stateMachine;
 	/**
 	 * <div lang="ja">
@@ -46,6 +50,9 @@ public class StateMachineExecutionThread extends Thread {
 	
 	private boolean suspendFlag;
 	
+	public boolean isSuspend() {
+		return suspendFlag;
+	}
 	
 	public void stopExecution() {
 		stopFlag = true;
@@ -72,7 +79,15 @@ public class StateMachineExecutionThread extends Thread {
 	@Override
 	public void run() {
 		stateMachine.reset();
-		stateMachine.start();
+		try {
+			stateMachine.start();
+		} catch (Exception e) {
+			logger.severe("Exception occurred when starting StateMachine");
+			for(StackTraceElement elem : e.getStackTrace()) {
+				logger.severe(elem.toString());
+			}
+			stopFlag = true;
+		}
 		while(!stopFlag) {
 			try {
 				if(!suspendFlag) {

@@ -366,6 +366,19 @@ public interface State extends ModelElement {
 	 * </div>
 	 */
 	public abstract StateActionList getOnEntryActionList();
+
+	/**
+	 * getNumTransition
+	 * <div lang="ja">
+	 * 
+	 * @return
+	 * </div>
+	 * <div lang="en">
+	 *
+	 * @return
+	 * </div>
+	 */
+	public abstract int getNumTransition();
 	
 	
 

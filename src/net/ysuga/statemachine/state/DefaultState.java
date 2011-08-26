@@ -2,6 +2,7 @@ package net.ysuga.statemachine.state;
 
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -306,17 +307,17 @@ public class DefaultState implements State {
 			} else {
 				continue;
 			}
+			Map<Integer, StateAction> actionMap = new HashMap<Integer, StateAction>();
 
 			NodeList grandChildNodeList = childNode.getChildNodes();
 			for (int j = 0; j < grandChildNodeList.getLength(); j++) {
 				Node grandChildNode = grandChildNodeList.item(j);
-				Map<Integer, StateAction> actionMap = new HashMap<Integer, StateAction>();
 				if (grandChildNode.getNodeName().equals(
 						StateMachineTagNames.STATEACTION)) {
 					int order = Integer.parseInt(grandChildNode.getAttributes()
 							.getNamedItem(StateMachineTagNames.ORDER)
 							.getNodeValue());
-					String kind = grandChildNode.getTextContent();
+					String kind = grandChildNode.getAttributes().getNamedItem(StateMachineTagNames.KIND).getNodeValue();
 					StateActionFactory factory = StateActionFactoryManager
 							.getInstance().get(kind);
 					if (factory == null) {
@@ -326,13 +327,13 @@ public class DefaultState implements State {
 							.createStateAction(grandChildNode);
 					actionMap.put(new Integer(order), action);
 				}
-
-				for (int k = 0; k < actionMap.size(); k++) {
-					StateAction action = actionMap.get(new Integer(k));
-					actionList.add(action);
-				}
 			}
-
+			ArrayList<Integer> keyList = new ArrayList(actionMap.keySet());
+			Collections.sort(keyList);
+			for (Integer key : keyList) {
+				StateAction action = actionMap.get(key);
+				actionList.add(action);
+			}
 		}
 	}
 
@@ -537,6 +538,19 @@ public class DefaultState implements State {
 			transition.vanish();
 			transitionMap.remove(transition);
 		}
+	}
+
+	/**
+	 * <div lang="ja">
+	 * @return
+	 * </div>
+	 * <div lang="en">
+	 * @return
+	 * </div>
+	 */
+	@Override
+	public int getNumTransition() {
+		return transitionMap.size();
 	}
 
 }

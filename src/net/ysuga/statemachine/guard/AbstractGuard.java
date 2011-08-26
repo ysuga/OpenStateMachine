@@ -79,7 +79,11 @@ public abstract class AbstractGuard implements Guard {
 		Element element = xmlDocument.createElement(StateMachineTagNames.GUARD);
 		element.setAttribute(StateMachineTagNames.NAME, getName());
 		element.setAttribute(StateMachineTagNames.KIND, getKind());
-		Element paramElement = getParameterMap().toElement(xmlDocument);
+		ParameterMap parameterMap = getParameterMap();
+		if(parameterMap == null) {
+			parameterMap = new ParameterMap();
+		}
+		Element paramElement =parameterMap.toElement(xmlDocument);
 		element.appendChild(paramElement);
 		
 		return element;
